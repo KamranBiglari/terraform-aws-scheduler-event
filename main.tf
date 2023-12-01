@@ -1,72 +1,7 @@
-variable "name_prefix" {
-  type        = string
-  description = "name prefix"
-}
-
-variable "rules" {
-  type        = any
-  description = "rules"
-}
-
-variable "create_group_name" {
-  type        = bool
-  description = "create group"
-  default     = false
-}
-
-variable "group_name" {
-  type        = string
-  description = "group name"
-  default     = "default"
-}
-
-
-variable "group_tags" {
-  type        = map(string)
-  description = "group tags"
-  default     = {}
-}
-
-variable "create_default_role" {
-  type        = bool
-  description = "create default role"
-  default     = false
-}
-
-variable "default_role_name" {
-  type        = string
-  description = "default role name"
-  default     = ""
-}
-
-variable "default_role_policy_arns" {
-  type        = list(string)
-  description = "default role policy arns"
-  default     = []
-}
-
-variable "default_role_policy" {
-  type        = any
-  description = "default role assume policy"
-  default = {
-    "Version" : "2008-10-17",
-    "Statement" : [
-      {
-        "Sid" : "",
-        "Effect" : "Allow",
-        "Principal" : {
-          "Service" : "scheduler.amazonaws.com"
-        },
-        "Action" : "sts:AssumeRole"
-      }
-    ]
-  }
-}
-
 # Create an AWS IAM default role for the scheduler to assume. This role will be used to execute the target action.
 resource "aws_iam_role" "default" {
   count               = (var.create_default_role) ? 1 : 0
-  name                = var.default_role_name
+  name                = "${var.name_prefix}${var.default_role_name}"
   assume_role_policy  = jsonencode(var.default_role_policy)
   managed_policy_arns = var.default_role_policy_arns
   tags = {
@@ -77,7 +12,7 @@ resource "aws_iam_role" "default" {
 # Create an AWS IAM role for the scheduler to assume. This role will be used to execute the target action.
 resource "aws_iam_role" "this" {
   for_each            = { for k, v in var.rules : k => v if can(v.target.role) }
-  name                = each.value.target.role.name
+  name                = "${var.name_prefix}${each.value.target.role.name}"
   assume_role_policy  = try(jsonencode(each.value.target.role.assume_role_policy), jsonencode(var.default_role_policy))
   managed_policy_arns = try(each.value.target.role.managed_policy_arns, var.default_role_policy_arns)
   tags = {
