@@ -1,14 +1,3 @@
-# terraform-aws-scheduler-event
-
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/KamranBiglari/terraform-aws-scheduler-event)](https://github.com/KamranBiglari/terraform-aws-scheduler-event/releases/latest)
-
-
-## How to use 
-
-
-## Example
-
-```
 terraform {
   required_version = ">= 0.13.0"
   required_providers {
@@ -21,11 +10,11 @@ terraform {
 
 provider "aws" {
   region  = "eu-west-2"
+  profile = "ncfx-dev"
 }
 
-
 module "scheduler_ecs_control" {
-    source  = "KamranBiglari/scheduler-event/aws"
+    source  = "../"
     name_prefix    = "ecs-servicecontrol"
     group_name = "default"
 
@@ -110,49 +99,3 @@ module "scheduler_ecs_control" {
     ]
 
 }
-
-```
-<!-- BEGIN_TF_DOCS -->
-## Requirements
-
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.11 |
-
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.29.0 |
-
-## Modules
-
-No modules.
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [aws_iam_role.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
-| [aws_iam_role.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
-| [aws_scheduler_schedule.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/scheduler_schedule) | resource |
-| [aws_scheduler_schedule_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/scheduler_schedule_group) | resource |
-
-## Inputs
-
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_create_default_role"></a> [create\_default\_role](#input\_create\_default\_role) | create default role | `bool` | `false` | no |
-| <a name="input_create_group_name"></a> [create\_group\_name](#input\_create\_group\_name) | create group | `bool` | `false` | no |
-| <a name="input_default_role_name"></a> [default\_role\_name](#input\_default\_role\_name) | default role name | `string` | `""` | no |
-| <a name="input_default_role_policy"></a> [default\_role\_policy](#input\_default\_role\_policy) | default role assume policy | `any` | <pre>{<br>  "Statement": [<br>    {<br>      "Action": "sts:AssumeRole",<br>      "Effect": "Allow",<br>      "Principal": {<br>        "Service": "scheduler.amazonaws.com"<br>      },<br>      "Sid": ""<br>    }<br>  ],<br>  "Version": "2008-10-17"<br>}</pre> | no |
-| <a name="input_default_role_policy_arns"></a> [default\_role\_policy\_arns](#input\_default\_role\_policy\_arns) | default role policy arns | `list(string)` | `[]` | no |
-| <a name="input_group_name"></a> [group\_name](#input\_group\_name) | group name | `string` | `"default"` | no |
-| <a name="input_group_tags"></a> [group\_tags](#input\_group\_tags) | group tags | `map(string)` | `{}` | no |
-| <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | name prefix | `string` | n/a | yes |
-| <a name="input_rules"></a> [rules](#input\_rules) | rules | `any` | n/a | yes |
-
-## Outputs
-
-No outputs.
-<!-- END_TF_DOCS -->
