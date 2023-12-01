@@ -22,7 +22,7 @@ resource "aws_iam_role" "this" {
 
 # Create schedule group
 resource "aws_scheduler_schedule_group" "this" {
-  count       = (var.create_group_name) ? 0 : 1
+  count       = (var.create_group_name) ? 1 : 0
   name        = try(var.group_name, null)
   tags        = try(var.group_tags, null)
 }
