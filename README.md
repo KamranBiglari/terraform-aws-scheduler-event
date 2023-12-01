@@ -132,7 +132,7 @@ module "scheduler_ecs_control" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.29.0 |
 
 ## Modules
 
@@ -163,5 +163,10 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_default_iam_role"></a> [default\_iam\_role](#output\_default\_iam\_role) | n/a |
+| <a name="output_inline_iam_role"></a> [inline\_iam\_role](#output\_inline\_iam\_role) | n/a |
+| <a name="output_schedule"></a> [schedule](#output\_schedule) | n/a |
+| <a name="output_schedule_group"></a> [schedule\_group](#output\_schedule\_group) | n/a |
 <!-- END_TF_DOCS -->
