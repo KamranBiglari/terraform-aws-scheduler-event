@@ -132,7 +132,7 @@ module "scheduler_ecs_control" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.29.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
 
 ## Modules
 
@@ -143,9 +143,13 @@ No modules.
 | Name | Type |
 |------|------|
 | [aws_iam_role.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role.default_iterated](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role.iterated_rules](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_scheduler_schedule.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/scheduler_schedule) | resource |
+| [aws_scheduler_schedule.this_iterated](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/scheduler_schedule) | resource |
 | [aws_scheduler_schedule_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/scheduler_schedule_group) | resource |
+| [aws_sfn_state_machine.this_iterated](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sfn_state_machine) | resource |
 
 ## Inputs
 
@@ -154,12 +158,13 @@ No modules.
 | <a name="input_create_default_role"></a> [create\_default\_role](#input\_create\_default\_role) | create default role | `bool` | `false` | no |
 | <a name="input_create_group_name"></a> [create\_group\_name](#input\_create\_group\_name) | create group | `bool` | `false` | no |
 | <a name="input_default_role_name"></a> [default\_role\_name](#input\_default\_role\_name) | default role name | `string` | `""` | no |
-| <a name="input_default_role_policy"></a> [default\_role\_policy](#input\_default\_role\_policy) | default role assume policy | `any` | <pre>{<br>  "Statement": [<br>    {<br>      "Action": "sts:AssumeRole",<br>      "Effect": "Allow",<br>      "Principal": {<br>        "Service": "scheduler.amazonaws.com"<br>      },<br>      "Sid": ""<br>    }<br>  ],<br>  "Version": "2008-10-17"<br>}</pre> | no |
+| <a name="input_default_role_policy"></a> [default\_role\_policy](#input\_default\_role\_policy) | default role assume policy | `any` | <pre>{<br/>  "Statement": [<br/>    {<br/>      "Action": "sts:AssumeRole",<br/>      "Effect": "Allow",<br/>      "Principal": {<br/>        "Service": "scheduler.amazonaws.com"<br/>      },<br/>      "Sid": ""<br/>    }<br/>  ],<br/>  "Version": "2008-10-17"<br/>}</pre> | no |
 | <a name="input_default_role_policy_arns"></a> [default\_role\_policy\_arns](#input\_default\_role\_policy\_arns) | default role policy arns | `list(string)` | `[]` | no |
 | <a name="input_group_name"></a> [group\_name](#input\_group\_name) | group name | `string` | `"default"` | no |
 | <a name="input_group_tags"></a> [group\_tags](#input\_group\_tags) | group tags | `map(string)` | `{}` | no |
+| <a name="input_iterated_rules"></a> [iterated\_rules](#input\_iterated\_rules) | iterated rules | `any` | `[]` | no |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | name prefix | `string` | n/a | yes |
-| <a name="input_rules"></a> [rules](#input\_rules) | rules | `any` | n/a | yes |
+| <a name="input_rules"></a> [rules](#input\_rules) | rules | `any` | `[]` | no |
 
 ## Outputs
 

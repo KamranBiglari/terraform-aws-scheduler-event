@@ -6,6 +6,13 @@ variable "name_prefix" {
 variable "rules" {
   type        = any
   description = "rules"
+  default     = []
+}
+
+variable "iterated_rules" {
+  type        = any
+  description = "iterated rules"
+  default     = []
 }
 
 variable "create_group_name" {

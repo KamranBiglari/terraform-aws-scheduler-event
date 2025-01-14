@@ -1,0 +1,25 @@
+{
+    "QueryLanguage": "JSONPath",
+    "Comment": "${comment}",
+    "StartAt": "Map",
+    "States": {
+      "Map": {
+        "Type": "Map",
+        "ItemProcessor": {
+          "ProcessorConfig": {
+            "Mode": "INLINE"
+          },
+          "StartAt": "${resourceName}",
+          "States": {
+            "${resourceName}": {
+              "Type": "Task",
+              "Parameters": ${parameters},
+              "Resource": "${resource}",
+              "End": true
+            }
+          }
+        },
+        "End": true
+      }
+    }
+  }

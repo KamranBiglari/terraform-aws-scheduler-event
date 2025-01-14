@@ -13,6 +13,32 @@ module "scheduler_complete_control" {
     "arn:aws:iam::aws:policy/AWSStepFunctionsFullAccess",
   ]
 
+  iterated_rules = [
+    {
+      name = "start_multiple_ecs_at_17_00_every_sunday"
+      expression = "cron(1 17 ? * SUN *)"
+      timezone   = "Europe/London"
+      flexible_time_window = {
+        maximum_window_in_minutes = 1
+        mode                      = "FLEXIBLE"
+      }
+      target = {
+        arn = "arn:aws:states:::aws-sdk:ecs:updateService"
+        role_arn = "arn:aws:iam::123456789012:role/ecs-service-role"
+        input = [
+          {
+            Cluster = "<MyCluster>"
+            Service = "<ServiceName1>"
+          },
+          {
+            Cluster = "<MyCluster>"
+            Service = "<ServiceName2>"
+          }
+        ]
+      }
+    }
+  ]
+
   rules = [
     {
       name       = "run-on-2030-01-01-01-00"
