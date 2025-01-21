@@ -85,7 +85,7 @@ resource "aws_iam_role" "default_iterated" {
 
 resource "aws_scheduler_schedule" "this_iterated" {
   for_each    = { for k, v in var.iterated_rules : k => v }
-  name        = "${var.name_prefix}${each.value.name}"
+  name        = substr("${var.name_prefix}${each.value.name}",0,64)
   description = try(each.value.description, null)
   group_name  = (var.create_group_name) ? aws_scheduler_schedule_group.this[0].name : var.group_name
   state       = try(each.value.state, "ENABLED")
@@ -99,12 +99,9 @@ resource "aws_scheduler_schedule" "this_iterated" {
   }
 
   target {
-    arn      = "arn:aws:scheduler:::aws-sdk:sfn:startExecution"
+    arn      = aws_sfn_state_machine.this_iterated[each.key].arn
     role_arn = aws_iam_role.default_iterated[0].arn
-    input = jsonencode({
-      StateMachineArn = aws_sfn_state_machine.this_iterated[each.key].arn
-      Input           = jsonencode(each.value.target.input)
-    })
+    input = jsonencode(each.value.target.input)
     retry_policy {
       maximum_event_age_in_seconds = try(each.value.target.retry_policy.maximum_event_age_in_seconds, 60)
       maximum_retry_attempts       = try(each.value.target.retry_policy.maximum_retry_attempts, 1)
@@ -152,6 +149,6 @@ resource "aws_sfn_state_machine" "this_iterated" {
     comment      = try(each.value.comment, ""),
     resourceName = tolist(split(":", each.value.target.arn))[length(tolist(split(":", each.value.target.arn))) - 1],
     resource     = each.value.target.arn,
-    parameters   = jsonencode({ for k in tolist(keys(each.value.target.input[0])) : k => "$$.Map.Item.Value.${k}" }),
+    parameters   = jsonencode({ for k in tolist(keys(each.value.target.input[0])) : "${k}.$" => "$$.Map.Item.Value.${k}" }),
   })
 }
