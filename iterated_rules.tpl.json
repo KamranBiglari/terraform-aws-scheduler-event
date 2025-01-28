@@ -5,6 +5,7 @@
     "States": {
       "Map": {
         "Type": "Map",
+        "ItemsPath": "$",
         "ItemProcessor": {
           "ProcessorConfig": {
             "Mode": "INLINE"

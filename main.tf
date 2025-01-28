@@ -68,12 +68,20 @@ resource "aws_iam_role" "default_iterated" {
     "Version" : "2008-10-17",
     "Statement" : [
       {
-        "Sid" : "",
+        "Sid" : "defaultIteratedSchedulerAssumeRole",
         "Effect" : "Allow",
         "Principal" : {
           "Service" : "scheduler.amazonaws.com"
         },
         "Action" : "sts:AssumeRole"
+      },
+      {
+        "Action": "sts:AssumeRole",
+        "Principal": {
+          "Service": "states.amazonaws.com"
+        },
+        "Effect": "Allow",
+        "Sid": "defaultIteratedStatesAssumeRole"
       }
     ]
   })
@@ -122,12 +130,20 @@ resource "aws_iam_role" "iterated_rules" {
     "Version" : "2008-10-17",
     "Statement" : [
       {
-        "Sid" : "",
+        "Sid" : "iteratedRulesSchedulerAssumeRole",
         "Effect" : "Allow",
         "Principal" : {
           "Service" : "scheduler.amazonaws.com"
         },
         "Action" : "sts:AssumeRole"
+      },
+      {
+        "Action": "sts:AssumeRole",
+        "Principal": {
+          "Service": "states.amazonaws.com"
+        },
+        "Effect": "Allow",
+        "Sid": "iteratedRulesStatesAssumeRole"
       }
     ]
   })
@@ -149,6 +165,6 @@ resource "aws_sfn_state_machine" "this_iterated" {
     comment      = try(each.value.comment, ""),
     resourceName = tolist(split(":", each.value.target.arn))[length(tolist(split(":", each.value.target.arn))) - 1],
     resource     = each.value.target.arn,
-    parameters   = jsonencode({ for k in tolist(keys(each.value.target.input[0])) : "${k}.$" => "$$.Map.Item.Value.${k}" }),
+    parameters   = jsonencode({ for k in tolist(keys(each.value.target.input[0])) : "${k}.$" => "$.${k}" }),
   })
 }

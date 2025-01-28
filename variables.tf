@@ -58,10 +58,18 @@ variable "default_role_policy" {
     "Version" : "2008-10-17",
     "Statement" : [
       {
-        "Sid" : "",
+        "Sid" : "defaultRolePolicySchedulerAssumeRole",
         "Effect" : "Allow",
         "Principal" : {
           "Service" : "scheduler.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      },
+      {
+        "Sid" : "defaultRolePolicyStatesAssumeRole",
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "states.amazonaws.com"
         },
         "Action" : "sts:AssumeRole"
       }
